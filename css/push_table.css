@@ -1,0 +1,66 @@
+.button {
+    background-color: #000000;
+    border: none;
+    box-shadow: 0 9px#505050;
+    padding: 30px;
+    text-align: center;
+    font-size: 28px;
+}
+
+.button:hover {
+    background-color: #3F3F3F;
+}
+
+.button:active {
+    box-shadow: 0 5px #3D3D3D;
+    transform: translateY(5px);
+}
+
+.red {
+    color: #FF0000;
+}
+
+.green {
+    color: #00FF00;
+}
+
+.blue {
+    color: #0000FF;
+}
+
+.yellow {
+    color: #FFFF00;
+}
+
+.round {
+    border-radius: 50%;
+}
+
+.divTable{
+	display: table;
+	width: 25%;
+}
+.divTableRow {
+	display: table-row;
+}
+.divTableHeading {
+	display: table-header-group;
+}
+.divTableCell, .divTableHead {
+	border: none;
+	display: table-cell;
+	padding: 3px 10px;
+}
+.divTableHeading {
+	border: none;
+	display: table-header-group;
+	font-weight: bold;
+}
+.divTableFoot {
+	border: none;
+	display: table-footer-group;
+	font-weight: bold;
+}
+.divTableBody {
+	display: table-row-group;
+}

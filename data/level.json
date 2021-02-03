@@ -1,0 +1,5 @@
+{
+	"Source" : ./Img/GrassTexture.jpg,
+	"WinSource" : ./Img/WinScreen.png,
+	"DeathSource" : ./Img/DeathScreen.png
+}

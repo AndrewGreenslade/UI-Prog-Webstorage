@@ -1,0 +1,66 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="./css/push.css">
+</head>
+
+<body onload="onPageLoad()">
+	<h1 id="WelcomeName"> </h1>
+	<h1 id="HUD"> </h1>
+	<h1 id="ClickText"> </h1>
+	<canvas tabindex="1" id="game" width="800" height="800" style="border: black 1px solid;">
+        Oops! looks like your browser does not support canvas tag
+    </canvas>
+	<br>
+	<table class="LeftAllign">
+
+		<audio id="sound">   
+			<source src="audio/ButtonPress.mp3">   
+			Your browser does not support the audio element.
+		</audio> 
+
+        <tbody>
+		    <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr> 
+				<td>&nbsp;</td>
+                <td><button ontouchend="MeleeButtonDown()" onmousedown="MeleeButtonDown()" onclick="playButtonClick()" id="MeleeButton" class="button red round">&#9876</button></td>                			
+                <td>&nbsp;</td>
+            </tr>
+		    <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="RightAllign">
+        <tbody>
+            <tr>
+                <td>&nbsp;</td>
+                <td><button ontouchend="ButtonUp()" ontouchstart="UpbuttonOnClick()" onmousedown="UpbuttonOnClick()" onclick="playButtonClick()" id="buttonUp" class="button yellow round">&#8593</button></td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td><button ontouchend="ButtonUp()" ontouchstart="LeftbuttonOnClick()" onmousedown="LeftbuttonOnClick()" onclick="playButtonClick()" id="buttonLeft" class="button blue round">&#8592</button></td>
+                <td>&nbsp;</td>
+                <td><button ontouchend="ButtonUp()" ontouchstart="RightbuttonOnClick()" onmousedown="RightbuttonOnClick()" onclick="playButtonClick()" id="buttonRight" class="button cyan round">&#8594</button></td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td><button ontouchend="ButtonUp()" ontouchstart="DownbuttonOnClick()" onmousedown="DownbuttonOnClick()" onclick="playButtonClick()" id="buttonDown" class="button green round">&#8595</button></td>
+                <td>&nbsp;</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+<script src="./js/script.js"></script>
+
+</html>
