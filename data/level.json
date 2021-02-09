@@ -1,5 +1,4 @@
-{
-	"Source" : ./Img/GrassTexture.jpg,
-	"WinSource" : ./Img/WinScreen.png,
-	"DeathSource" : ./Img/DeathScreen.png
+{ 
+    "CoinOne": 400, 
+    "CoinTwo":300
 }

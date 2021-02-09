@@ -14,65 +14,33 @@ bg.src = bgSRC;
 var DeathBGSRC = "./Img/WinScreen.png";
 var WinBGSRC = "./Img/DeathScreen.png";
 
+function CoinGameObj(x,y,PickedUp)
+{
+    this.x = x;
+    this.y = y;
+	this.PickedUp = PickedUp;
+}
+
+var coins = [new CoinGameObj(0,0,false),new CoinGameObj(0,0,false)];
+//var coins = [new CoinGameObj(600,100,false),new CoinGameObj(350,300,false)];
 
 function onPageLoad() 
 {
-/*	
+	var xmlhttp = new XMLHttpRequest();
 	
-  var backgrounds = {
-    'Source': "",
-    'WinSource': "",
-    'DeathSource': ""
-  };
-
- localStorage.setItem('BG', JSON.stringify(backgrounds));
- 
- var bgObjects = localStorage.getItem('BG');
-  
- console.log('bgObjects: ', JSON.parse(bgObjects));
-
-  // Reading Level Information from a file
-	var readJSONFromURL = function (url, callback) {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', url, true);
-    xhr.responseType = 'json';
-
-    xhr.onload = function () {
-      var status = xhr.status;
-      if (status == 200) {
-        callback(null, xhr.response);
-      } else {
-        callback(status);
-      }
-    };
-
-    xhr.send();
-  };
-  
-  readJSONFromURL('./data/level.json', function (err, data) {
-    if (err != null) {
-      console.error(err);
-    } else {
-      var text = data["Regular"];
-      console.log(text);
-      var text = data["Win"];
-      console.log(text);
-      var text = data["Death"];
-      console.log(text);
-    }
-  });
-  
-  var xmlhttp = new XMLHttpRequest();
-  xmlhttp.onreadystatechange = function () {
-    if (this.readyState == 4 && this.status == 200) {
-      var data = JSON.parse(this.responseText);
-      bgSRC = data[0];
-    }
-  };
-  xmlhttp.open("GET", "./data/level.json", true);
-  xmlhttp.send();
-
-*/
+	xmlhttp.onreadystatechange = function() { 
+		if(this.readyState == 4 && this.status == 200) {
+			var data = JSON.parse(this.responseText);
+			coins[0].x = data.CoinOne;
+			coins[0].y = data.CoinOne;
+			coins[1].x = data.CoinTwo;
+			coins[1].y = data.CoinTwo;
+		}
+	};
+	
+	xmlhttp.open("GET", "./data/level.json", true);
+	xmlhttp.send();
+	
 }
 
 var queryString = window.location.search;
@@ -136,6 +104,8 @@ function GameObject(name, img, health,x,y)
     this.y = y;
 }
 
+
+
 // The GamerInput is an Object that holds the Current
 // GamerInput (Left, Right, Up, Down)
 function GamerInput(input) {
@@ -156,6 +126,14 @@ var canvas = document.getElementById("game");
 // get 2D context for this canvas
 var context = canvas.getContext("2d");
 
+//coin objects
+
+var coinImages = new Array(); 
+for (i = 0; i < coins.length; i++)
+{
+	coinImages.push(new Image());
+	coinImages[i].src = "./Img/Coin.png";
+}
 
 //images array
 var images = new Array(); 
@@ -194,8 +172,7 @@ document.getElementById("buttonLeft").onmouseup = function() {ButtonUp()};
 document.getElementById("buttonRight").onmouseup = function() {ButtonUp()};
 document.getElementById("MeleeButton").onmouseup = function() {MeleeButtonUp()};
 
-  
-
+var mySound = document.getElementById("sound");   
 
 //function for Left Input
 function LeftbuttonOnClick(){
@@ -330,6 +307,7 @@ function update()
 		}
 	}
 	DamageSystem();
+	CoinCollisions();
 }
 
 // Draw GameObjects to Console
@@ -344,6 +322,14 @@ function draw()
 	
 	//background image draw
 	context.drawImage(bg,0,0,800,800);
+	
+	for (j = 0; j < coins.length; j++)
+	{
+		if(coins[j].PickedUp === false)
+		{
+			context.drawImage(coinImages[j], 0, 0, coinImages[j].width , coinImages[j].height, coins[j].x, coins[j].y, 75, 75);
+		}
+	}
 	
     for (i = 0; i < gameobjects.length; i++)
 	{
@@ -389,7 +375,6 @@ function gameloop()
     draw();
     window.requestAnimationFrame(gameloop);
 }
-
 
 //fucntion for animating the stick object
 function animateStick()
@@ -441,13 +426,56 @@ function playButtonClick()
 	document.getElementById("ClickText").innerHTML = "You have clicked any button " + localStorage.clickcount + " time(s).";
 }
 
-// Handle Active Browser Tag Animation
-window.requestAnimationFrame(gameloop);
-weaponSelection();
+//function for playing Adding score
+function AddScore()
+{
+	if (localStorage.ScoreCount)
+	{
+		localStorage.ScoreCount = Number(localStorage.ScoreCount) + 1;
+	} 
+	else 
+	{
+		localStorage.ScoreCount = 1;
+	}
+	
+	document.getElementById("ScoreText").innerHTML = "Your Score: " + localStorage.ScoreCount + " !";
+}
+
+//function for detecting collisions for coins and Adding score
+function CoinCollisions()
+{
+	if(gameobjects[0].health > 0)
+	{
+		for (j = 0; j < coins.length; j++)
+		{
+			if(coins[j].PickedUp === false)
+			{
+				var NewPosX = gameobjects[0].x - coins[j].x;
+				var NewPosY = gameobjects[0].y - coins[j].y;
+
+				if(NewPosX < 75 && NewPosY < 75 )
+				{		
+					coins[j].PickedUp = true;
+					AddScore();
+				}
+			}
+		}
+	}
+}
 
 if (!localStorage.clickcount)
 {
 	localStorage.clickcount = 0;
 } 
 
+if (!localStorage.ScoreCount)
+{
+	localStorage.ScoreCount = 0;
+} 
+
+document.getElementById("ScoreText").innerHTML = "Your Score: " + localStorage.ScoreCount + " !";
 document.getElementById("ClickText").innerHTML = "You have clicked any button " + localStorage.clickcount + " time(s).";
+
+// Handle Active Browser Tag Animation
+window.requestAnimationFrame(gameloop);
+weaponSelection();
